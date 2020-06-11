@@ -53,11 +53,18 @@ $config = [
    *
    * With CoolApi, you can require api keys for access to your
    * API. Look below for the configuration.
+   *
+   * CoolApi looks for the api key in 3 places:
+   * - Authorization: Bearer <api_key_here>
+   * - $_GET['key']
+   * - $_POST['key']
+   *
+   * Will accept a valid key from any of the above locations.
    */
   'apiKeys'    => [
     'enabled'  => false,
-    'keyField' => 'key',
-    'keys'     => []
+    'keyField' => 'key', // What it looks for in $_GET or $_POST
+    'keys'     => [] // Array of key strings
   ],
 
   /**
@@ -70,8 +77,8 @@ $config = [
    */
   'rateLimit' => [
     'enabled' => false,
-    'limit'   => 100,
-    'window'  => (60 * 15)
+    'limit'   => 100, // Number of requests
+    'window'  => (60 * 15) // In seconds (15 minutes)
   ],
 
   /**
@@ -168,27 +175,6 @@ Setting the content type:
 $res->status(200)->contentType('plain')->output('plain text');
 $res->status(200)->contentType('html')->output('<html></html>');
 ```
-
-## Requiring an API Key in the request
-
-You can use the following configuration to require an API key during the request to lockdown your API.
-
-```
-[
-  // Require an api key
-  'requireKey' => true,
-
-  // What param does it look for in POST or GET
-  'keyField' => 'key',
-
-  // List of valid keys
-  'keys' => [
-    'asdgioadsg32tegas'
-  ]
-]
-```
-
-`keyField` is looked at only if the request does not include a Authorization: Bearar <Token> in the request. It will then look for a `?key=` in the url, or `$_POST['key']`.
 
 ## Using Middleware
 
