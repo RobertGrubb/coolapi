@@ -18,7 +18,7 @@
   "require": {
     "php": ">=5.4.0",
     "composer/composer": "^1.10",
-    "robert-grubb/filerdb-php": "^1.1"
+    "robert-grubb/filerdb-php": "^1.2"
   },
   "autoload": {
     "psr-0": {

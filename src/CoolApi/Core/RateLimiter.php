@@ -18,32 +18,6 @@ class RateLimiter {
     // Set the parent instance
     $this->instance = $instance;
 
-    // Set the instance of FilerDB
-    $this->db = new \FilerDB\Instance([
-
-      /**
-       * This is the root path for FilerDB.
-       */
-      'root' => $this->instance->config->storagePath,
-
-      /**
-       * If the database does not exist, try
-       * and create it.
-       */
-      'createDatabaseIfNotExist' => true,
-
-      /**
-       * If the collection does not exist, attempt
-       * to create it.
-       */
-      'createCollectionIfNotExist' => true,
-
-      /**
-       * Selects the default database
-       */
-      'database' => 'coolapi'
-    ]);
-
     $this->initialize();
   }
 
@@ -51,7 +25,38 @@ class RateLimiter {
    * Do rate limit initialiation here.
    */
   private function initialize () {
-    $this->increaseRate();
+
+    // Check if rate limit is enabled
+    if ($this->instance->config->rateLimit['enabled']=== true) {
+
+      // Set the instance of FilerDB
+      $this->db = new \FilerDB\Instance([
+
+        /**
+         * This is the root path for FilerDB.
+         */
+        'root' => $this->instance->config->storage['path'],
+
+        /**
+         * If the database does not exist, try
+         * and create it.
+         */
+        'createDatabaseIfNotExist' => true,
+
+        /**
+         * If the collection does not exist, attempt
+         * to create it.
+         */
+        'createCollectionIfNotExist' => true,
+
+        /**
+         * Selects the default database
+         */
+        'database' => 'coolapi'
+      ]);
+
+      $this->increaseRate();
+    }
   }
 
   /**
@@ -81,8 +86,8 @@ class RateLimiter {
       $row = $exists[0];
 
       // Get rate limit settings
-      $limit = $this->instance->config->rateLimit['max'];
-      $span  = $this->instance->config->rateLimit['every'];
+      $limit = $this->instance->config->rateLimit['limit'];
+      $span  = $this->instance->config->rateLimit['window'];
 
       // If they are passed their window of limitations
       if (($row->startTime + $span) < time()) {

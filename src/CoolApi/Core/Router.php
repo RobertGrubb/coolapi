@@ -145,6 +145,9 @@ class Router {
     // If the route does not exist
     if (!$route = $this->route($route, $method)) {
 
+      // Log it
+      $this->instance->logger->error("Route does not exist");
+
       $this->instance->response->status(400)->output([
         'error' => true,
         'message' => 'Route does not exist'
@@ -193,9 +196,9 @@ class Router {
    */
   private function route ($route, $method) {
 
-    // Do checks for base_uri
-    if ($this->instance->config->base_uri !== '/') {
-      $route = ltrim($route, $this->instance->config->base_uri);
+    // Do checks for baseUri
+    if ($this->instance->config->baseUri !== '/') {
+      $route = ltrim($route, $this->instance->config->baseUri);
     }
 
     // If the route is empty, load the home route.

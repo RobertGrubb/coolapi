@@ -6,7 +6,7 @@ A new PHP API framework that is simple and fast.
 
 ## Installation
 
-Make sure you have rewrite mod enabled, and you place the following in `.httaccess` where your public folder is located:
+Make sure you have rewrite mod enabled, and you place the following in `.httaccess` where your public folder is located. **NOTE:** CoolApi will throw an exception if it's not found.
 
 ```
 RewriteEngine On
@@ -19,13 +19,80 @@ RewriteRule ^ index.php [QSA,L]
 
 `composer require robert-grubb/coolapi`
 
+## Configuration Explained
+
+All values below are the defaults set by the API.
+
+```
+$config = [
+
+  /**
+   * The baseUri is necessary if you are in a sub-directory on
+   * hosting. An example is: http://localhost/foo/bar/api
+   *
+   * If you specify /foo/bar/api in baseUri, it will be removed
+   * from the URI when matching routes.
+   */
+  'baseUri' => '/',
+
+  /**
+   * Log configuration:
+   *
+   * Logger requires a path that is writable, and the API will
+   * throw an exception if it is not. Below is the configuration
+   * for the logger.
+   */
+  'logging' => [
+    'enabled' => true,
+    'path'    => \CoolApi\Core\Utilities::root() . '/logs/',
+    'file'    => 'api.log'
+  ],
+
+  /**
+   * Configuration for api keys
+   *
+   * With CoolApi, you can require api keys for access to your
+   * API. Look below for the configuration.
+   */
+  'apiKeys'    => [
+    'enabled'  => false,
+    'keyField' => 'key',
+    'keys'     => []
+  ],
+
+  /**
+   * Configuration for Rate Limiting
+   *
+   * CoolApi comes with an out-of-the-box solution for rate limiting.
+   * In order for this to work properly, you must:
+   * 1. Provide a storage path (Look below for storage config) for FilerDB.
+   * 2. Enable it, and set a limit per window.
+   */
+  'rateLimit' => [
+    'enabled' => false,
+    'limit'   => 100,
+    'window'  => (60 * 15)
+  ],
+
+  /**
+   * Configuration for storage
+   * (rateLimit requires a storage path)
+   * Path: A writable directory somewhere on your filesystem.
+   */
+  'storage' => [
+    'path'  => false
+  ]
+
+];
+```
+
 ## Example of Usage
 
 ```
 use CoolApi\Instance;
 
 // Instantiate Cool Api
-$api = new Instance();
+$api = new Instance($config);
 
 // Setup home route
 $api->router->get('/', function ($req, $res) {
@@ -152,27 +219,3 @@ $api->router->get('/test', $middleware, function ($req, $res) {
   // Do as you please here
 });
 ```
-
-## Rate Limiting
-
-With CoolApi, you can rate limit requests from clients as well. This is based on the host, and uses FilerDB to store it (Which means you need to add another path to your application so it can store the information).
-
-First start by adding a path of `database`, and setting the permissions to be writable.
-
-Then add the following to the configuration of CoolApi:
-
-```
-// Limit requests set to true
-'limitRequests' => true,
-
-// Set the rateLimit settings
-'rateLimit' => [
-  'max' => 100,
-  'every' => (60 * 15) // 15 minutes
-],
-
-// Set the storage path
-'storagePath' => __DIR__ . '/database'
-```
-
-And just like that, you have rate limiting setup for 100 requests every 15 minutes!

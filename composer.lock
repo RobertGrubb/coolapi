@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c3f351b8a8aa20065729cbf92983c7e",
+    "content-hash": "1fbd4df64280d2db0170b46fe8d4d4e3",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -671,16 +671,16 @@
         },
         {
             "name": "robert-grubb/filerdb-php",
-            "version": "v1.1",
+            "version": "v1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RobertGrubb/filerdb-php.git",
-                "reference": "0bad821161feedf191e59f845e27ed6ef35f150a"
+                "reference": "92e9c7c9b62bbb70083bc2e2bb43bcc5ee308d7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobertGrubb/filerdb-php/zipball/0bad821161feedf191e59f845e27ed6ef35f150a",
-                "reference": "0bad821161feedf191e59f845e27ed6ef35f150a",
+                "url": "https://api.github.com/repos/RobertGrubb/filerdb-php/zipball/92e9c7c9b62bbb70083bc2e2bb43bcc5ee308d7f",
+                "reference": "92e9c7c9b62bbb70083bc2e2bb43bcc5ee308d7f",
                 "shasum": ""
             },
             "require": {
@@ -712,7 +712,7 @@
                 "database",
                 "flatfile"
             ],
-            "time": "2020-05-30T21:09:28+00:00"
+            "time": "2020-06-11T15:53:57+00:00"
         },
         {
             "name": "seld/jsonlint",

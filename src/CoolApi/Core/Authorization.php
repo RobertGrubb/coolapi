@@ -24,8 +24,9 @@ class Authorization {
    * validation or not.
    */
   public function initialize () {
-    if (!isset($this->instance->config->requireKey)) return false;
-    if ($this->instance->config->requireKey === true) $this->validateKey();
+
+    // Make sure apiKeys are enabled
+    if ($this->instance->config->apiKeys['enabled'] === true) $this->validateKey();
   }
 
   /**
@@ -42,13 +43,13 @@ class Authorization {
     if (!$key) return $this->unauthorized();
 
     // If there are no keys provided in config
-    if (!isset($this->instance->config->keys)) return $this->unauthorized();
+    if (!isset($this->instance->config->apiKeys['keys'])) return $this->unauthorized();
 
     // Make sure keys are provided in array format.
-    if (!is_array($this->instance->config->keys)) return $this->unauthorized();
+    if (!is_array($this->instance->config->apiKeys['keys'])) return $this->unauthorized();
 
     // If the key does not exist in the array.
-    if (!in_array($key, $this->instance->config->keys)) return $this->unauthorized();
+    if (!in_array($key, $this->instance->config->apiKeys['keys'])) return $this->unauthorized();
 
     // Finally, if here, then we found the key.
     return true;
@@ -60,7 +61,7 @@ class Authorization {
    * @return boolean|string
    */
   private function getApiKey () {
-    $keyField = $this->instance->config->keyField;
+    $keyField = $this->instance->config->apiKeys['keyField'];
     $key = false;
 
     // Is it in bearer token form?

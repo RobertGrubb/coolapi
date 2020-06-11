@@ -23,8 +23,7 @@ class Checks {
   }
 
   private function initialize () {
-    $root = dirname(\Composer\Factory::getComposerFile());
-    $this->root = $root;
+    $this->root = \CoolApi\Core\Utilities::root();
   }
 
   /**
@@ -36,14 +35,20 @@ class Checks {
   public function run () {
 
     /**
-     * Check logs path existance and whether
-     * or not it is writable.
+     * Check to make sure logging is enabled for the API.
      */
-    if (!is_dir("{$this->root}/logs"))
-      throw new \Exception("{$this->root}/logs does not exist.");
+    if ($this->instance->config->logging['enabled'] === true) {
 
-    if (!is_writable("{$this->root}/logs"))
-      throw new \Exception("{$this->root}/logs is not writable.");
+      /**
+       * Check logs path existance and whether
+       * or not it is writable.
+       */
+      if (!is_dir("{$this->root}/logs"))
+        throw new \Exception("{$this->root}/logs does not exist.");
+
+      if (!is_writable("{$this->root}/logs"))
+        throw new \Exception("{$this->root}/logs is not writable.");
+    }
 
     /**
      * Check if .htaccess exists.
@@ -55,14 +60,14 @@ class Checks {
      * If rate limiting is enabled, we must test the storage
      * path for 1. if it exists, and 2. if it is writable.
      */
-    if ($this->instance->config->limitRequests) {
-      if (!$this->instance->config->storagePath)
+    if ($this->instance->config->rateLimit['enabled'] === true) {
+      if (!$this->instance->config->storage['path'])
         throw new \Exception("LimitRequests is enabled, you must set a storagePath.");
 
-      if (!is_dir($this->instance->config->storagePath))
+      if (!is_dir($this->instance->config->storage['path']))
         throw new \Exception("Storage path is not a directory.");
 
-      if (!is_writable($this->instance->config->storagePath))
+      if (!is_writable($this->instance->config->storage['path']))
         throw new \Exception("Storage path is not writable.");
     }
   }
