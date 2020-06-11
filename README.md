@@ -123,6 +123,21 @@ $api->router->put('/test', function ($req, $res) { /** Code here **/ });
 $api->router->delete('/test', function ($req, $res) { /** Code here **/ });
 ```
 
+Using parameters in the route itself:
+
+```
+$api->router->post('/user/:id', function ($req, $res) {
+
+  // You can now access the id parameter via:
+  var_dump($req->param('id'));
+
+});
+```
+
+If the parameter does not exist, it will return false.
+
+To get all parameters from the request: `$req->params`.
+
 ## Use of $req
 
 Getting POST, or GET variables:

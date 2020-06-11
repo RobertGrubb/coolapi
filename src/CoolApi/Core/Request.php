@@ -4,6 +4,20 @@ namespace CoolApi\Core;
 
 class Request {
 
+  public $params;
+
+  public function __construct () {
+    $this->params = (object) [];
+  }
+
+  public function param ($var = null) {
+    if (is_null($var)) return false;
+
+    if (!isset($this->params->{$var})) return false;
+
+    return $this->params->{$var};
+  }
+
   // Retrieve get variables
   public function get($key = null) {
     if (is_null($key)) return $_GET;
