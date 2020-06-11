@@ -1,0 +1,29 @@
+{
+  "name": "robert-grubb/coolapi",
+  "description": "Simple PHP API framework",
+  "keywords": [
+    "api",
+    "php",
+    "framework"
+  ],
+  "type": "library",
+  "homepage": "https://github.com/RobertGrubb/coolapi",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "RobertGrubb",
+      "email": "matt@grubb.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "psr-0": {
+      "CoolApi": "src"
+    }
+  },
+  "support": {
+    "email": "matt@grubb.com"
+  }
+}
