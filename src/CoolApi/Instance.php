@@ -28,7 +28,19 @@ class Instance {
       // Authorization Configuration
       'requireKey' => false,
       'keyField'   => 'key',
-      'keys'       => []
+      'keys'       => [],
+
+      // Rate limit configuration
+      'limitRequests' => false,
+
+      // Set the rateLimit settings
+      'rateLimit' => [
+        'max' => 100, // Max of 100 requests
+        'every' => (60 * 1) // 15 minutes
+      ],
+
+      // Storage settings
+      'storagePath' => false
 
     ], $initialConfig));
 
@@ -39,7 +51,12 @@ class Instance {
     $this->router   = new \CoolApi\Core\Router($this);
     $this->response = new \CoolApi\Core\Response();
     $this->request  = new \CoolApi\Core\Request();
-    $this->auth     = new \CoolApi\Core\Authorization($this);
+
+    // Run the authorization layer
+    (new \CoolApi\Core\Authorization($this));
+
+    // Run the rate limiter layer
+    (new \CoolApi\Core\RateLimiter($this));
   }
 
   public function run () {

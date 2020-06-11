@@ -152,3 +152,27 @@ $api->router->get('/test', $middleware, function ($req, $res) {
   // Do as you please here
 });
 ```
+
+## Rate Limiting
+
+With CoolApi, you can rate limit requests from clients as well. This is based on the host, and uses FilerDB to store it (Which means you need to add another path to your application so it can store the information).
+
+First start by adding a path of `database`, and setting the permissions to be writable.
+
+Then add the following to the configuration of CoolApi:
+
+```
+// Limit requests set to true
+'limitRequests' => true,
+
+// Set the rateLimit settings
+'rateLimit' => [
+  'max' => 100,
+  'every' => (60 * 15) // 15 minutes
+],
+
+// Set the storage path
+'storagePath' => __DIR__ . '/database'
+```
+
+And just like that, you have rate limiting setup for 100 requests every 15 minutes!

@@ -17,7 +17,19 @@ $api = new Instance([
   // List of valid keys
   'keys' => [
     'asdgioadsg32tegas'
-  ]
+  ],
+
+  // Limit requests set to true
+  'limitRequests' => true,
+
+  // Set the rateLimit settings
+  'rateLimit' => [
+    'max' => 5,
+    'every' => (60 * 1) // 15 minutes
+  ],
+
+  // Set the storage path
+  'storagePath'   => __DIR__ . '/database'
 
 ]);
 

@@ -24,6 +24,10 @@ class Request {
     }
   }
 
+  public function remoteIp () {
+    return $_SERVER['SERVER_ADDR'];
+  }
+
   // Retrieve a specific header
   public function header ($key) {
     $headers = $this->headers();
