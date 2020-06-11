@@ -50,5 +50,20 @@ class Checks {
      */
     if (!file_exists("{$this->root}/.htaccess"))
       throw new \Exception("{$this->root}/.htaccess does not exist");
+
+    /**
+     * If rate limiting is enabled, we must test the storage
+     * path for 1. if it exists, and 2. if it is writable.
+     */
+    if ($this->instance->config->limitRequests) {
+      if (!$this->instance->config->storagePath)
+        throw new \Exception("LimitRequests is enabled, you must set a storagePath.");
+
+      if (!is_dir($this->instance->config->storagePath))
+        throw new \Exception("Storage path is not a directory.");
+
+      if (!is_writable($this->instance->config->storagePath))
+        throw new \Exception("Storage path is not writable.");
+    }
   }
 }

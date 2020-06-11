@@ -45,15 +45,15 @@ $api->run();
 To add a route for CoolApi, it's as simple as the following:
 
 ```
-$app->router->get('/test', function ($req, $res) { /** Code here **/ });
+$api->router->get('/test', function ($req, $res) { /** Code here **/ });
 ```
 
 And is the same for POST, PUT, or DELETE
 
 ```
-$app->router->post('/test', function ($req, $res) { /** Code here **/ });
-$app->router->put('/test', function ($req, $res) { /** Code here **/ });
-$app->router->delete('/test', function ($req, $res) { /** Code here **/ });
+$api->router->post('/test', function ($req, $res) { /** Code here **/ });
+$api->router->put('/test', function ($req, $res) { /** Code here **/ });
+$api->router->delete('/test', function ($req, $res) { /** Code here **/ });
 ```
 
 ## Use of $req
@@ -148,7 +148,31 @@ $middleware = function ($req, $res) {
  * If the middleware returns true, then that means the handler can
  * successfully be reached and ran.
  */
-$app->router->get('/test', $middleware, function ($req, $res) {
+$api->router->get('/test', $middleware, function ($req, $res) {
   // Do as you please here
 });
 ```
+
+## Rate Limiting
+
+With CoolApi, you can rate limit requests from clients as well. This is based on the host, and uses FilerDB to store it (Which means you need to add another path to your application so it can store the information).
+
+First start by adding a path of `database`, and setting the permissions to be writable.
+
+Then add the following to the configuration of CoolApi:
+
+```
+// Limit requests set to true
+'limitRequests' => true,
+
+// Set the rateLimit settings
+'rateLimit' => [
+  'max' => 100,
+  'every' => (60 * 15) // 15 minutes
+],
+
+// Set the storage path
+'storagePath' => __DIR__ . '/database'
+```
+
+And just like that, you have rate limiting setup for 100 requests every 15 minutes!
