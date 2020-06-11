@@ -149,6 +149,16 @@ $req->post() // Gets all $_POST variables
 $req->get() // Gets all $_GET variables
 ```
 
+Getting parameters from the URL:
+
+```
+// Returns false if it doesn't exist.
+$req->param('id')
+
+// Gets all parameters in object form
+$req->params;
+```
+
 Getting headers from the request
 
 ```
