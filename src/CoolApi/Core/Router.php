@@ -4,8 +4,12 @@ namespace CoolApi\Core;
 
 class Router {
 
+  // The parent instance holder
   private $instance;
 
+  /**
+   * Stores registered routes
+   */
   private $routes = [
     'get'    => [],
     'post'   => [],
@@ -159,7 +163,7 @@ class Router {
     }
 
     // If can't run, middleware did not return a error
-    if (!$canRun) $this->instance->response->status(400)->output([
+    if ($canRun === false) $this->instance->response->status(400)->output([
       'error' => true,
       'message' => 'Unknown error was returned'
     ]);
@@ -204,14 +208,23 @@ class Router {
     return $this->routes[(strtolower($method))][$route];
   }
 
+  /**
+   * Get the URI without any query parameters.
+   */
   private function uri () {
     return $this->removeQueryStringVariables($_SERVER['REQUEST_URI']);
   }
 
+  /**
+   * Get the current request method
+   */
   private function method () {
     return $_SERVER['REQUEST_METHOD'];
   }
 
+  /**
+   * Removed query parameters from a given URI.
+   */
   private function removeQueryStringVariables($uri) {
     if ($uri != '') {
       $parts = explode('&', $uri, 2);
@@ -223,10 +236,8 @@ class Router {
 
   private function initialize () {
 
-    // $this->routes['get']['/'] = [
-    //   'handler' => function () {
-    //     echo "HOME";
-    //   }
-    // ];
+    /**
+     * Do initialization here
+     */
   }
 }

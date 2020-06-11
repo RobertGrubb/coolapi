@@ -19,6 +19,9 @@ class Instance {
 
     // Set the initial config
     $this->initialize(array_merge([
+
+      'logFile' => 'api.log',
+
       // URL Configuration
       'base_uri' => '/',
 
@@ -26,15 +29,21 @@ class Instance {
       'requireKey' => false,
       'keyField'   => 'key',
       'keys'       => []
+
     ], $initialConfig));
 
-    $this->auth     = new \CoolApi\Core\Authorization($this);
+    // Do checks for paths, etc
+    (new \CoolApi\Core\Checks($this))->run();
+
+    $this->logger   = new \CoolApi\Core\Logger($this);
     $this->router   = new \CoolApi\Core\Router($this);
     $this->response = new \CoolApi\Core\Response();
     $this->request  = new \CoolApi\Core\Request();
+    $this->auth     = new \CoolApi\Core\Authorization($this);
   }
 
   public function run () {
+    $this->logger->info('Instance is running');
     $this->router->run();
   }
 

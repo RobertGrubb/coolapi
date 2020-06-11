@@ -4,6 +4,7 @@ namespace CoolApi\Core;
 
 class Authorization {
 
+  // Parent instance holder
   private $instance;
 
   /**
@@ -18,34 +19,60 @@ class Authorization {
     $this->initialize();
   }
 
+  /**
+   * Decides whether it needs to continue with key
+   * validation or not.
+   */
   public function initialize () {
     if (!isset($this->instance->config->requireKey)) return false;
     if ($this->instance->config->requireKey === true) $this->validateKey();
   }
 
+  /**
+   * Attempts to validate an api key if it is required
+   * by the instance configuration object.
+   * @return boolean
+   */
   private function validateKey () {
+
+    // Attempt to get the key from 1 of the 3 sources
     $key = $this->getApiKey();
 
+    // If no key, return unauthorized error.
     if (!$key) return $this->unauthorized();
 
+    // If there are no keys provided in config
     if (!isset($this->instance->config->keys)) return $this->unauthorized();
+
+    // Make sure keys are provided in array format.
     if (!is_array($this->instance->config->keys)) return $this->unauthorized();
 
-    foreach ($this->instance->config->keys as $apiKey) {
-      if ($key === $apiKey) return true;
-    }
+    // If the key does not exist in the array.
+    if (!in_array($key, $this->instance->config->keys)) return $this->unauthorized();
 
-    return $this->unauthorized();
+    // Finally, if here, then we found the key.
+    return true;
   }
 
+  /**
+   * Attempts to find the api key from 1 of
+   * the 3 sources. Auth header, GET, or POST.
+   * @return boolean|string
+   */
   private function getApiKey () {
     $keyField = $this->instance->config->keyField;
     $key = false;
 
+    // Is it in bearer token form?
     $bearerToken = $this->getBearerToken();
+
+    // Is it passed as a get var?
     $getKey = $this->instance->request->get($keyField);
+
+    // Is it provided as a post key?
     $postKey = $this->instance->request->post($keyField);
 
+    // Set if any are provided
     if ($bearerToken) $key = $bearerToken;
     if ($getKey) $key = $getKey;
     if ($postKey) $key = $postKey;
@@ -54,6 +81,10 @@ class Authorization {
     return $key;
   }
 
+  /**
+   * Pluck the token from the header.
+   * @return boolean|string
+   */
   private function getBearerToken() {
     $authHeader = $this->instance->request->header('Authorization');
     if (!$authHeader) return false;
@@ -61,7 +92,12 @@ class Authorization {
     return trim(substr($authHeader, 7));
   }
 
+  /**
+   * Returns an error and exits the app immediately.
+   */
   private function unauthorized () {
+    $this->instance->logger->error('Missing valid api key in request.');
+
     $this->instance->response->status(401)->output([
       'error' => true,
       'message' => 'Unauthorized'
