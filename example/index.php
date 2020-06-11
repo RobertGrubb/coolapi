@@ -9,27 +9,38 @@ use CoolApi\Instance;
 $api = new Instance([
 
   // Base URI (For sub-directories)
-  'base_uri' => '/coolapi/example/',
+  'baseUri' => '/coolapi/example/',
 
-  // Require an api key
-  'requireKey' => false,
-
-  // List of valid keys
-  'keys' => [
-    'asdgioadsg32tegas'
+  'logging' => [
+    'enabled' => true
   ],
 
-  // Limit requests set to true
-  'limitRequests' => true,
+  /**
+   * Configuration for api keys
+   */
+  'apiKeys' => [
+    'enabled' => false,
+    'keyField' => 'key',
+    'keys' => [
+      'asdgioadsg32tegas'
+    ]
+  ],
 
-  // Set the rateLimit settings
+  /**
+   * Configuration for Rate Limiting
+   */
   'rateLimit' => [
-    'max' => 5,
-    'every' => (60 * 1) // 15 minutes
+    'enabled' => true,
+    'limit'   => 5,
+    'window'  => (60 * 1)
   ],
 
-  // Set the storage path
-  'storagePath'   => __DIR__ . '/database'
+  /**
+   * Configuration for storage
+   */
+  'storage'   => [
+    'path' => __DIR__ . '/database'
+  ]
 
 ]);
 
