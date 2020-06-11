@@ -45,15 +45,15 @@ $api->run();
 To add a route for CoolApi, it's as simple as the following:
 
 ```
-$app->router->get('/test', function ($req, $res) { /** Code here **/ });
+$api->router->get('/test', function ($req, $res) { /** Code here **/ });
 ```
 
 And is the same for POST, PUT, or DELETE
 
 ```
-$app->router->post('/test', function ($req, $res) { /** Code here **/ });
-$app->router->put('/test', function ($req, $res) { /** Code here **/ });
-$app->router->delete('/test', function ($req, $res) { /** Code here **/ });
+$api->router->post('/test', function ($req, $res) { /** Code here **/ });
+$api->router->put('/test', function ($req, $res) { /** Code here **/ });
+$api->router->delete('/test', function ($req, $res) { /** Code here **/ });
 ```
 
 ## Use of $req
@@ -148,7 +148,7 @@ $middleware = function ($req, $res) {
  * If the middleware returns true, then that means the handler can
  * successfully be reached and ran.
  */
-$app->router->get('/test', $middleware, function ($req, $res) {
+$api->router->get('/test', $middleware, function ($req, $res) {
   // Do as you please here
 });
 ```
