@@ -1,7 +1,8 @@
 # Cool API
 
-A new PHP API framework that is simple and fast.
+**NOTE: DEVELOPMENT IN PROGRESS**
 
+A new PHP API framework that is simple and fast.
 
 ## .htaccess
 
