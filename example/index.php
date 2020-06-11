@@ -63,5 +63,15 @@ $api->router->get('/', $middleware, function ($req, $res) {
   ]);
 });
 
+// Setup home route
+$api->router->get('/user/:id', function ($req, $res) {
+
+  // Return an output
+  $res->status(200)->output([
+    'foo' => 'bar',
+    'id'  => $req->param('id')
+  ]);
+});
+
 // Run the API
 $api->run();

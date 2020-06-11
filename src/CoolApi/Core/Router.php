@@ -204,11 +204,43 @@ class Router {
     // If the route is empty, load the home route.
     $route = '/' . $route;
 
-    // If not set, return false
-    if (!isset($this->routes[(strtolower($method))][$route])) return false;
+    /**
+     * Handle routes with parameters in the URL.
+     * Example:
+     */
+    foreach ($this->routes[(strtolower($method))] as $regex => $data) {
 
-    // Return the route
-    return $this->routes[(strtolower($method))][$route];
+      // Set the patter for the regex test
+      $pattern = "@^" . preg_replace('/\\\:[a-zA-Z0-9\_\-]+/', '([a-zA-Z0-9\-\_]+)', preg_quote($regex)) . "$@D";
+
+      // Test the route to make sure it matches
+      if (preg_match($pattern, $route, $matches)) {
+
+        $parts = explode('/', $regex);
+
+        $params = [];
+
+        // For each part of the url, find the vars.
+        for ($i = 0; $i < count($parts); $i++) {
+
+          // If this is a variable
+          if (strpos($parts[$i], ':') !== false) {
+
+            // Match the var to the matches from the URL.
+            $params[str_replace(':', '', $parts[$i])] = isset($matches[(count($params) + 1)]) ? $matches[(count($params) + 1)] : null;
+          }
+        }
+
+        // Set the parameters in the request class
+        $this->instance->request->params = (object) $params;
+
+        // Return the route
+        return $this->routes[(strtolower($method))][$regex];
+      }
+    }
+
+    // The route did not match any of the registered routes
+    return false;
   }
 
   /**
