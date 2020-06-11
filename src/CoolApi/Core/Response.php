@@ -27,6 +27,11 @@ class Response {
         $this->contentTypeFormatted = 'application/json';
         break;
 
+      case 'html':
+        $this->contentType = 'html';
+        $this->contentTypeFormatted = 'text/html';
+        break;
+
       case 'plain':
         $this->contentType = 'plain';
         $this->contentTypeFormatted = 'text/plain';
