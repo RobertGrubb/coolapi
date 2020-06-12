@@ -130,6 +130,48 @@ class Router {
   }
 
   /**
+   * Ability to provide an array of routes for a specific
+   * path.
+   * @param  string $prefix [description]
+   * @param  array $routes [description]
+   * @return boolean
+   */
+  public function use ($prefix, $routes) {
+    $numArgs = func_num_args();
+    $prefix = (substr($prefix, -1) !== '/' ? $prefix . '/' : $prefix);
+    $middleware = null;
+    $routes = $routes;
+
+    // Check if middleware is provided.
+    if ($numArgs === 3) {
+      $middleware = func_get_arg(1);
+      $routes    = func_get_arg(2);
+    }
+
+    // Routes is not an array, return false.
+    if (!is_array($routes)) return false;
+
+    // Count is 0, return false.
+    if (count($routes) === 0) return false;
+
+    // Iterate through each
+    foreach ($routes as $route => $data) {
+
+      // Assume it is a get route if not specified
+      $method = (isset($data['method']) ? $data['method'] : 'get');
+
+      // If handler does not exist, continue.
+      if (!isset($data['handler'])) continue;
+
+      $route = $prefix . ($route[0] === '/' ? ltrim($route, '/') : $route);
+      $this->createRoute(strtolower($method), $route, $middleware, $data['handler']);
+    }
+
+    // Return true if we got this far.
+    return true;
+  }
+
+  /**
    * Run the router
    *
    * Finds the route, and if it exists, will run

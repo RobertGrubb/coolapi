@@ -138,6 +138,46 @@ If the parameter does not exist, it will return false.
 
 To get all parameters from the request: `$req->params`.
 
+## `$api->router->use()`
+
+The `use()` method allows you to use an array of routes that can be imported from other files to organize your code in a simple way. Below is an example of how to define a route in another file, and export it.
+
+#### userRoutes.php
+
+```
+$data = function ($req, $res) {
+  $id = $req->param('id');
+
+  $res->output([
+    'id' => $id
+  ]);
+};
+
+return [
+  ':id/data' => [
+    'method'  => 'get',
+    'handler' => $data
+  ]
+];
+```
+
+
+#### index.php
+
+Below is how you would import userRoutes.php
+
+```
+$userRoutes = require_once __DIR__ . '/userRoutes.php';
+
+// Make use of routes from other files
+$api->router->use('/user', $userRoutes);
+
+// Or with middleware:
+$api->router->use('/user', $middleware, $userRoutes);
+```
+
+Now you can access `/user/:id/data` as a GET route.
+
 ## Use of $req
 
 Getting POST, or GET variables:
