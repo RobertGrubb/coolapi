@@ -3,6 +3,8 @@
 require '../vendor/autoload.php';
 require_once __DIR__ . '/../src/CoolApi.php';
 
+$userRoutes = require_once __DIR__ . '/userRoutes.php';
+
 use CoolApi\Instance;
 
 // Instantiate Cool Api
@@ -44,12 +46,17 @@ $api = new Instance([
 
 ]);
 
+/**
+ * Example of middleware, checks if user-agent
+ * header is present.
+ */
 $middleware = function ($req, $res) {
-  // $res->status(400)->output([
-  //   'error' => true,
-  //   'message' => 'Middleware error'
-  // ]);
+  if (!$req->header('User-Agent')) return false;
+  return true;
 };
+
+// Make use of routes from other files
+$api->router->use('/user', $middleware, $userRoutes);
 
 // Setup home route
 $api->router->get('/', $middleware, function ($req, $res) {
@@ -61,16 +68,7 @@ $api->router->get('/', $middleware, function ($req, $res) {
     'get' => $req->get(),
     'post' => $req->post()
   ]);
-});
 
-// Setup home route
-$api->router->get('/user/:id', function ($req, $res) {
-
-  // Return an output
-  $res->status(200)->output([
-    'foo' => 'bar',
-    'id'  => $req->param('id')
-  ]);
 });
 
 // Run the API
