@@ -39,15 +39,17 @@ class Checks {
      */
     if ($this->instance->config->logging['enabled'] === true) {
 
+      $logPath = $this->instance->config->logging['path'];
+
       /**
        * Check logs path existance and whether
        * or not it is writable.
        */
-      if (!is_dir("{$this->root}/logs"))
-        throw new \Exception("{$this->root}/logs does not exist.");
+      if (!is_dir("{$logPath}"))
+        throw new \Exception("{$logPath} does not exist.");
 
-      if (!is_writable("{$this->root}/logs"))
-        throw new \Exception("{$this->root}/logs is not writable.");
+      if (!is_writable("{$logPath}"))
+        throw new \Exception("{$logPath} is not writable.");
     }
 
     /**

@@ -21,7 +21,9 @@ class Response {
    * Sets the content type
    */
   public function contentType($type) {
+
     switch ($type) {
+
       case 'json':
         $this->contentType = 'json';
         $this->contentTypeFormatted = 'application/json';
