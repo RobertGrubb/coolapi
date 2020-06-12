@@ -244,7 +244,10 @@ class Router {
     }
 
     // If the route is empty, load the home route.
-    $route = ($route === '/' ? '' : '/') . $route;
+    $route = '/' . $route;
+
+    // Fail safe: remove double slashes at the beginning
+    if (substr($route, 0, 2) === '//') $route = substr($route, 1);
 
     /**
      * Handle routes with parameters in the URL.
