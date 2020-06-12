@@ -127,6 +127,13 @@ class Instance {
     if (isset($this->config->baseUri)) {
       $this->set('baseUri', $this->config->baseUri);
     }
+
+    // Fix the logging path
+    if (isset($this->config->logging['path'])) {
+      if (substr($this->config->logging['path'], -1) !== '/') {
+        $this->config->logging['path'] = $this->config->logging['path'] . '/';
+      }
+    }
   }
 
   /**

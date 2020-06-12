@@ -64,7 +64,7 @@ class Logger {
       $log = "[{$date}][{$label}]: {$data}\r\n";
 
       // Add it to the file
-      file_put_contents($logging['path'] . $logging['file'], $log, FILE_APPEND | LOCK_EX);
+      file_put_contents((substr($logging['path'], -1) !== '/' ? $logging['path'] . '/' : $logging['path']) . $logging['file'], $log, FILE_APPEND | LOCK_EX);
     }
   }
 }
