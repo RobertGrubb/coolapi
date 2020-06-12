@@ -244,7 +244,7 @@ class Router {
     }
 
     // If the route is empty, load the home route.
-    $route = '/' . $route;
+    $route = ($route === '/' ? '' : '/') . $route;
 
     /**
      * Handle routes with parameters in the URL.
