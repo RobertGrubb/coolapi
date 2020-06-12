@@ -51,7 +51,7 @@ class Router {
       $handler    = func_get_arg(1);
     }
 
-    $this->createRoute('get', $route, $middleware, $handler);
+    $this->createRoute('get', ($route[0] !== '/' ? '/' . $route : $route), $middleware, $handler);
   }
 
   /**
@@ -76,7 +76,7 @@ class Router {
       $handler    = func_get_arg(1);
     }
 
-    $this->createRoute('post', $route, $middleware, $handler);
+    $this->createRoute('post', ($route[0] !== '/' ? '/' . $route : $route), $middleware, $handler);
   }
 
   /**
@@ -101,7 +101,7 @@ class Router {
       $handler    = func_get_arg(1);
     }
 
-    $this->createRoute('put', $route, $middleware, $handler);
+    $this->createRoute('put', ($route[0] !== '/' ? '/' . $route : $route), $middleware, $handler);
   }
 
   /**
@@ -126,7 +126,7 @@ class Router {
       $handler    = func_get_arg(1);
     }
 
-    $this->createRoute('delete', $route, $middleware, $handler);
+    $this->createRoute('delete', ($route[0] !== '/' ? '/' . $route : $route), $middleware, $handler);
   }
 
   /**
@@ -138,6 +138,7 @@ class Router {
    */
   public function use ($prefix, $routes) {
     $numArgs = func_num_args();
+    $prefix = ($prefix[0] !== '/' ? '/' . $prefix : $prefix);
     $prefix = (substr($prefix, -1) !== '/' ? $prefix . '/' : $prefix);
     $middleware = null;
     $routes = $routes;
@@ -244,7 +245,10 @@ class Router {
     }
 
     // If the route is empty, load the home route.
-    $route = ($route === '/' ? '' : '/') . $route;
+    $route = '/' . $route;
+
+    // Fail safe: remove double slashes at the beginning
+    if (substr($route, 0, 2) === '//') $route = substr($route, 1);
 
     /**
      * Handle routes with parameters in the URL.
