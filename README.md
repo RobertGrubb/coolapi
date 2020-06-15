@@ -62,11 +62,18 @@ $config = [
    *
    * With CoolApi, you can require api keys for access to your
    * API. Look below for the configuration.
+   *
+   * CoolApi looks for the api key in 3 places:
+   * - Authorization: Bearer <api_key_here>
+   * - $_GET['key']
+   * - $_POST['key']
+   *
+   * Will accept a valid key from any of the above locations.
    */
   'apiKeys'    => [
     'enabled'  => false,
-    'keyField' => 'key',
-    'keys'     => []
+    'keyField' => 'key', // What it looks for in $_GET or $_POST
+    'keys'     => [] // Array of key strings
   ],
 
   /**
@@ -79,8 +86,8 @@ $config = [
    */
   'rateLimit' => [
     'enabled' => false,
-    'limit'   => 100,
-    'window'  => (60 * 15)
+    'limit'   => 100, // Number of requests
+    'window'  => (60 * 15) // In seconds (15 minutes)
   ],
 
   /**
@@ -335,7 +342,6 @@ You can use the following configuration to require an API key during the request
 ```
 
 Now the key `thisisanapikey` is only accessible from the origin `www.facebook.com`
-
 ## Using Middleware
 
 This api is setup so you can use your own middleware in the routes. Below is an example:
