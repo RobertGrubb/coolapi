@@ -40,6 +40,12 @@ class Instance {
   public $logger;
 
   /**
+   * The cors instance holder
+   * @var CoolApi\Core\Cors
+   */
+  public $cors;
+
+  /**
    * Class constructor
    * @param array $customConfig
    */
@@ -59,6 +65,15 @@ class Instance {
         'enabled' => true,
         'path'    => \CoolApi\Core\Utilities::root() . '/logs/',
         'file'    => 'api.log'
+      ],
+
+      /**
+       * Configuration for api keys
+       */
+      'cors'    => [
+        'enabled'   => true,
+        'whitelist' => '*',
+        'blacklist' => false
       ],
 
       /**
@@ -100,6 +115,10 @@ class Instance {
     $this->router   = new \CoolApi\Core\Router($this);
     $this->response = new \CoolApi\Core\Response();
     $this->request  = new \CoolApi\Core\Request();
+    $this->cors     = new \coolApi\Core\Cors($this);
+
+    // Run the cors logic
+    $this->cors->initialize();
 
     // Run the authorization layer
     (new \CoolApi\Core\Authorization($this));

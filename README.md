@@ -241,6 +241,47 @@ $res->status(200)->contentType('plain')->output('plain text');
 $res->status(200)->contentType('html')->output('<html></html>');
 ```
 
+## Requiring an API Key in the request
+
+You can use the following configuration to require an API key during the request to lockdown your API.
+
+```
+[
+  /**
+   * Configuration for api keys
+   */
+  'apiKeys'    => [
+    'enabled'  => false,
+    'keyField' => 'key',
+    'keys'     => [
+      'thisisanapikey'
+    ]
+  ],
+]
+```
+
+`keyField` is looked at only if the request does not include a Authorization: Bearar <Token> in the request. It will then look for a `?key=` in the url, or `$_POST['key']`.
+
+### Setting an origin for a specific key:
+
+```
+[
+  /**
+   * Configuration for api keys
+   */
+  'apiKeys'    => [
+    'enabled'  => false,
+    'keyField' => 'key',
+    'keys'     => [
+      'thisisanapikey' => [
+        'origin' => 'www.facebook.com'
+      ]
+    ]
+  ],
+]
+```
+
+Now the key `thisisanapikey` is only accessible from the origin `www.facebook.com`
 ## Using Middleware
 
 This api is setup so you can use your own middleware in the routes. Below is an example:
