@@ -25,9 +25,8 @@ $api = new Instance([
     'keyField' => 'key',
     'keys'     => [
       'test123' => [
-        'origin' => '127.0.0.1'
-      ],
-      'asdfasdfasdfasdf'
+        'origin' => 'www.facebook.com'
+      ]
     ]
   ],
 
