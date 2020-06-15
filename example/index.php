@@ -21,10 +21,13 @@ $api = new Instance([
    * Configuration for api keys
    */
   'apiKeys' => [
-    'enabled' => false,
+    'enabled' => true,
     'keyField' => 'key',
-    'keys' => [
-      'asdgioadsg32tegas'
+    'keys'     => [
+      'test123' => [
+        'origin' => '127.0.0.1'
+      ],
+      'asdfasdfasdfasdf'
     ]
   ],
 

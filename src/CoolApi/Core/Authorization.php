@@ -48,11 +48,33 @@ class Authorization {
     // Make sure keys are provided in array format.
     if (!is_array($this->instance->config->apiKeys['keys'])) return $this->unauthorized();
 
-    // If the key does not exist in the array.
-    if (!in_array($key, $this->instance->config->apiKeys['keys'])) return $this->unauthorized();
+    /**
+     * Iterate through the keys, and validate it as a valid key.
+     */
+    foreach ($this->instance->config->apiKeys['keys'] as $apiKey => $keyData) {
+
+      // If not an array, just match the key to the apiKey.
+      if (!is_array($keyData)) if ($keyData === $key) return true;
+
+      /**
+       * If an array is provided, then an origin was most likely set for
+       * the key itself.
+       */
+      if ($apiKey === $key) {
+
+        // We have matched the key.
+        $passes = true;
+
+        // Check the origin
+        if (isset($keyData['origin'])) $passes = $this->instance->cors->checkOrigin($keyData['origin']);
+      }
+    }
+
+    // If passes was set to false, return the error.
+    if (!$passes) return $this->unauthorized();
 
     // Finally, if here, then we found the key.
-    return true;
+    return $passes;
   }
 
   /**

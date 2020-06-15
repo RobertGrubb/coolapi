@@ -17,12 +17,9 @@ class Cors {
 
     // Set the parent instance
     $this->instance = $instance;
-
-    // Initialize the authorization layer
-    $this->initialize();
   }
 
-  private function initialize () {
+  public function initialize () {
 
     // If not enabled, stop here.
     if ($this->instance->config->cors['enabled'] !== true) return;
