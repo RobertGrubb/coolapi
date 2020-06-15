@@ -72,8 +72,10 @@ class Instance {
        */
       'cors'    => [
         'enabled'   => true,
-        'whitelist' => [],
-        'blacklist' => []
+        'whitelist' => '*',
+        'blacklist' => [
+          'https://www.google.com/'
+        ]
       ],
 
       /**
