@@ -42,6 +42,26 @@ class Request {
     return $_SERVER['SERVER_ADDR'];
   }
 
+  public function origin () {
+    $headers = $this->headers();
+    $origin = false;
+
+    // Get from the origin header
+    if (array_key_exists('Origin', $headers)) {
+      $origin = $headers['Origin'];
+
+    // If there is a referer header
+    } else if (array_key_exists('Referer', $headers)) {
+      $origin = $headers['Referer'];
+
+    // Lastly, get the remote address
+    } else {
+      $origin = isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '127.0.0.1';
+    }
+
+    return $origin;
+  }
+
   // Retrieve a specific header
   public function header ($key) {
     $headers = $this->headers();
