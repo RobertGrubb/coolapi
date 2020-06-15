@@ -49,6 +49,15 @@ $config = [
   ],
 
   /**
+   * Configuration for cors
+   */
+  'cors'    => [
+    'enabled'   => true,
+    'whitelist' => '*',
+    'blacklist' => false
+  ],
+
+  /**
    * Configuration for api keys
    *
    * With CoolApi, you can require api keys for access to your
@@ -233,6 +242,57 @@ Setting the content type:
 $res->status(200)->contentType('plain')->output('plain text');
 $res->status(200)->contentType('html')->output('<html></html>');
 ```
+
+## Enabling Cors Layer
+
+```
+[
+  /**
+   * Configuration for cors
+   */
+  'cors'    => [
+    'enabled'   => true,
+    'whitelist' => '*',
+    'blacklist' => false
+  ],
+]
+```
+
+Above will allow all sites to access your api.
+
+```
+[
+  /**
+   * Configuration for cors
+   */
+  'cors'    => [
+    'enabled'   => true,
+    'whitelist' => [
+      'https://www.google.com'
+    ],
+    'blacklist' => false
+  ],
+]
+```
+
+Above only allows requests from google.com
+
+```
+[
+  /**
+   * Configuration for cors
+   */
+  'cors'    => [
+    'enabled'   => true,
+    'whitelist' => '*',
+    'blacklist' => [
+      'https://www.google.com'
+    ]
+  ],
+]
+```
+
+Above allows requests from anywhere except google.com
 
 ## Requiring an API Key in the request
 

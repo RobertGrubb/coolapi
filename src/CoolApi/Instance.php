@@ -68,10 +68,10 @@ class Instance {
       ],
 
       /**
-       * Configuration for api keys
+       * Configuration for cors
        */
       'cors'    => [
-        'enabled'   => true,
+        'enabled'   => false,
         'whitelist' => '*',
         'blacklist' => false
       ],
