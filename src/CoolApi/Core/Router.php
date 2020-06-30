@@ -241,7 +241,7 @@ class Router {
 
     // Do checks for baseUri
     if ($this->instance->config->baseUri !== '/') {
-      $route = ltrim($route, $this->instance->config->baseUri);
+      $route = str_replace($this->instance->config->baseUri, '', $route);
     }
 
     // If the route is empty, load the home route.

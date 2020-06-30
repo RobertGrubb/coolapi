@@ -30,9 +30,11 @@ class Request {
 
   // Retrieve POST variables
   public function post($key = null) {
-    if (is_null($key)) return $_POST;
-    if (isset($_POST[$key])) {
-      return $_POST[$key];
+    $post = \CoolApi\Core\Utilities::getPost();
+
+    if (is_null($key)) return $post;
+    if (isset($post[$key])) {
+      return $post[$key];
     } else {
       return false;
     }
