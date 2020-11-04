@@ -24,9 +24,7 @@ $api = new Instance([
     'enabled' => true,
     'keyField' => 'key',
     'keys'     => [
-      'test123' => [
-        'origin' => 'www.facebook.com'
-      ]
+      'test123'
     ]
   ],
 
