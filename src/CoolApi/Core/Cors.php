@@ -66,6 +66,7 @@ class Cors {
   }
 
   public function checkOrigin ($allowedOrigin) {
+    if ($allowedOrigin === '*') return true;
     if (strpos($allowedOrigin, $this->instance->request->origin()) !== false) return true;
     else return false;
   }
