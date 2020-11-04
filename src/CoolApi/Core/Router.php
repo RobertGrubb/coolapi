@@ -308,7 +308,7 @@ class Router {
    */
   private function removeQueryStringVariables($uri) {
     if ($uri != '') {
-      $parts = explode('&', $uri, 2);
+      $parts = explode('?', $uri, 2);
       if (strpos($parts[0], '=') === false) $uri = $parts[0];
       else $uri = '';
     }
