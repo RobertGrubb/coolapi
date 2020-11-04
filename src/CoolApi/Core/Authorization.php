@@ -48,6 +48,8 @@ class Authorization {
     // Make sure keys are provided in array format.
     if (!is_array($this->instance->config->apiKeys['keys'])) return $this->unauthorized();
 
+    $passes = false;
+
     /**
      * Iterate through the keys, and validate it as a valid key.
      */
